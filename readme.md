@@ -17,7 +17,7 @@ Bot WorkFlow
 -----------
 
 ```mermaid
-graph TD
+graph TD;
     A((Start)):::entryPoint --> |Bot Welcome Text|B{Action}
 
     B --> C1[Help]
@@ -61,7 +61,6 @@ graph TD
 
     classDef entryPoint fill:#009c11, stroke:#42FF57, color:#ffffff
     classDef termination fill:#bb0007, stroke:#E60109, color:#ffffff
-    
 ```
 
 ## Project Structure

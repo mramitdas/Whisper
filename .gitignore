@@ -1,4 +1,10 @@
 .DS_Store
 .idea/
 __pycache__/
-temp.py.env
+*.py[cod]
+temp.py
+
+.env
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/

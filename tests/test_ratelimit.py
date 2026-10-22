@@ -2,7 +2,7 @@ import asyncio
 
 from fakeredis import FakeAsyncRedis
 
-from bot.services import ratelimit
+from whisper.services import ratelimit
 
 
 async def test_sliding_window_allows_then_blocks():

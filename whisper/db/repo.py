@@ -1,7 +1,7 @@
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.models import Ban, Report, Stat, User
+from whisper.db.models import Ban, Report, Stat, User
 
 
 async def upsert_user(db: AsyncSession, uid, username, first_name, lang_code) -> None:

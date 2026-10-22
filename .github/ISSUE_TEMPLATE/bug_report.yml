@@ -52,7 +52,7 @@ body:
     id: logs
     attributes:
       label: Relevant logs
-      description: Paste output from `docker compose logs bot` or your terminal.
+      description: Paste output from `docker compose logs whisper` or your terminal.
       render: shell
 
   - type: checkboxes

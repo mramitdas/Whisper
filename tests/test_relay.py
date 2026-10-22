@@ -2,9 +2,9 @@ from types import SimpleNamespace
 
 from fakeredis import FakeAsyncRedis
 
-from bot.config import Settings
-from bot.handlers import relay as relay_mod
-from bot.services import matchmaker
+from whisper.config import Settings
+from whisper.handlers import relay as relay_mod
+from whisper.services import matchmaker
 
 
 class FakeBot:

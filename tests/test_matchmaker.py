@@ -1,6 +1,6 @@
 from fakeredis import FakeAsyncRedis
 
-from bot.services import matchmaker, sessions
+from whisper.services import matchmaker, sessions
 
 
 def fresh() -> FakeAsyncRedis:

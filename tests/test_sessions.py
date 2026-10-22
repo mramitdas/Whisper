@@ -1,6 +1,6 @@
 from fakeredis import FakeAsyncRedis
 
-from bot.services import sessions
+from whisper.services import sessions
 
 
 async def test_get_partner_roundtrip():

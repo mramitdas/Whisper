@@ -1,5 +1,5 @@
 services:
-  bot:
+  whisper:
     build: .
     env_file: .env
     restart: always

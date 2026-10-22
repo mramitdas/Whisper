@@ -6,10 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY pyproject.toml readme.md LICENSE ./
-COPY bot/ bot/
+COPY whisper/ whisper/
 RUN pip install --no-cache-dir .
 
 COPY alembic/ alembic/
 COPY alembic.ini .
 
-CMD ["python", "-m", "bot.main"]
+CMD ["python", "-m", "whisper.main"]

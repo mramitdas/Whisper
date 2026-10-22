@@ -6,9 +6,9 @@ from aiogram.types import CallbackQuery, Message, TelegramObject
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from bot import texts
-from bot.config import Settings
-from bot.services import bans as ban_service
+from whisper import texts
+from whisper.config import Settings
+from whisper.services import bans as ban_service
 
 
 class DiMiddleware(BaseMiddleware):

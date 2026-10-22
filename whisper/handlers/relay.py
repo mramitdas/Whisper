@@ -3,9 +3,9 @@ from aiogram.enums import ChatAction
 from aiogram.types import Message
 from redis.asyncio import Redis
 
-from bot import texts
-from bot.config import Settings
-from bot.services import moderation, ratelimit, sessions
+from whisper import texts
+from whisper.config import Settings
+from whisper.services import moderation, ratelimit, sessions
 
 router = Router(name="relay")
 

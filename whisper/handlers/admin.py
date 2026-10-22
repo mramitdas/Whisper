@@ -4,12 +4,12 @@ from aiogram.types import Message
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot import texts
-from bot.config import Settings
-from bot.db import repo
-from bot.jobs import cancel_search_task
-from bot.services import bans as ban_service
-from bot.services import matchmaker, sessions
+from whisper import texts
+from whisper.config import Settings
+from whisper.db import repo
+from whisper.jobs import cancel_search_task
+from whisper.services import bans as ban_service
+from whisper.services import matchmaker, sessions
 
 router = Router(name="admin")
 

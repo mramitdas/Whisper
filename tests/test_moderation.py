@@ -1,4 +1,4 @@
-from bot.services import moderation
+from whisper.services import moderation
 
 FORBIDDEN = ["scam", "nudes"]
 

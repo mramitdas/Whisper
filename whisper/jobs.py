@@ -3,8 +3,8 @@ import time
 
 from redis.asyncio import Redis
 
-from bot import keyboards, texts
-from bot.services import matchmaker, sessions
+from whisper import keyboards, texts
+from whisper.services import matchmaker, sessions
 
 search_tasks: dict[int, asyncio.Task] = {}
 

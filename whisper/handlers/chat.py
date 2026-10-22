@@ -3,10 +3,10 @@ from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message
 from redis.asyncio import Redis
 
-from bot import keyboards, texts
-from bot.config import Settings
-from bot.jobs import cancel_search_task, start_search_task
-from bot.services import matchmaker, ratelimit, sessions
+from whisper import keyboards, texts
+from whisper.config import Settings
+from whisper.jobs import cancel_search_task, start_search_task
+from whisper.services import matchmaker, ratelimit, sessions
 
 router = Router(name="chat")
 

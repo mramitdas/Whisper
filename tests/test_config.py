@@ -1,4 +1,4 @@
-from bot.config import Settings
+from whisper.config import Settings
 
 
 def test_defaults_and_types(tmp_path):

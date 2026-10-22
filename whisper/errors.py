@@ -4,10 +4,10 @@ import logging
 from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
 from aiogram.types import ErrorEvent
 
-from bot import texts
-from bot.services import sessions
+from whisper import texts
+from whisper.services import sessions
 
-log = logging.getLogger("bot.errors")
+log = logging.getLogger("whisper.errors")
 
 
 def _sender_uid(event: ErrorEvent) -> int | None:

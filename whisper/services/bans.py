@@ -1,7 +1,7 @@
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db import repo
+from whisper.db import repo
 
 BANSET = "bans:active"
 

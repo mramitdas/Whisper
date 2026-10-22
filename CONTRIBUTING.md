@@ -53,7 +53,7 @@ Use the [bug report template](https://github.com/mramitdas/whisper/issues/new?te
 
 - What you did, what you expected, what actually happened.
 - Your environment (Python version, Docker or bare metal, OS).
-- Relevant logs (`docker compose logs bot` or terminal output).
+- Relevant logs (`docker compose logs whisper` or terminal output).
 
 ## Security issues
 

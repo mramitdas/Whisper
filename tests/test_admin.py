@@ -3,9 +3,9 @@ from types import SimpleNamespace
 from fakeredis import FakeAsyncRedis
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from bot.config import Settings
-from bot.db.base import Base
-from bot.handlers import admin
+from whisper.config import Settings
+from whisper.db.base import Base
+from whisper.handlers import admin
 
 
 class FakeMessage:
@@ -49,7 +49,7 @@ async def test_admin_ban_and_unban():
     engine, maker = await make_env()
     settings = Settings(bot_token="1:t", owner_id=42)
     r = FakeAsyncRedis(decode_responses=True)
-    from bot.services import bans
+    from whisper.services import bans
 
     msg = FakeMessage(42, "/admin_ban 5")
     async with maker() as db:

@@ -2,9 +2,9 @@ from types import SimpleNamespace
 
 from fakeredis import FakeAsyncRedis
 
-from bot.errors import on_error
-from bot.jobs import idle_sweeper_once
-from bot.services import matchmaker, sessions
+from whisper.errors import on_error
+from whisper.jobs import idle_sweeper_once
+from whisper.services import matchmaker, sessions
 
 
 class FakeBot:

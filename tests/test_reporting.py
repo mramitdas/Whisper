@@ -3,9 +3,9 @@ from types import SimpleNamespace
 from fakeredis import FakeAsyncRedis
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from bot.config import Settings
-from bot.db.base import Base
-from bot.services import matchmaker, reporting, sessions
+from whisper.config import Settings
+from whisper.db.base import Base
+from whisper.services import matchmaker, reporting, sessions
 
 
 async def make_env():
@@ -34,7 +34,7 @@ async def test_auto_ban_at_threshold():
         assert second is False
         assert third is True
         await db.commit()
-    from bot.services import bans
+    from whisper.services import bans
 
     assert await bans.is_banned(r, 9) is True
     await engine.dispose()
@@ -49,7 +49,7 @@ async def test_same_reporter_counts_once():
         await reporting.submit_report(db, r, 1, 9, "y", settings)
         assert await reporting.submit_report(db, r, 1, 9, "z", settings) is False
         await db.commit()
-    from bot.services import bans
+    from whisper.services import bans
 
     assert await bans.is_banned(r, 9) is False
     await engine.dispose()
@@ -97,7 +97,7 @@ class FakeBot:
 
 
 async def test_cmd_report_and_block_handlers():
-    from bot.handlers import report as report_mod
+    from whisper.handlers import report as report_mod
 
     engine, maker = await make_env()
     r = FakeAsyncRedis(decode_responses=True)
@@ -111,7 +111,7 @@ async def test_cmd_report_and_block_handlers():
         await report_mod.cmd_report(message=msg, db=db, redis=r, settings=settings, bot=bot)
         await db.commit()
     assert msg.sent == ["Report received. Thanks for keeping this safe."]
-    from bot.db import repo
+    from whisper.db import repo
 
     async with maker() as db:
         assert await repo.count_reports(db) == 1

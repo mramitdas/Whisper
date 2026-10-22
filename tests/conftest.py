@@ -1,7 +1,7 @@
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from bot.db.base import Base
+from whisper.db.base import Base
 
 
 @pytest_asyncio.fixture

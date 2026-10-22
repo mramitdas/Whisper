@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 
-from bot.handlers import admin, chat, relay, report, start
+from whisper.handlers import admin, chat, relay, report, start
 
 
 def register_all(dp: Dispatcher) -> None:

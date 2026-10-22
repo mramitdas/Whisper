@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import BigInteger, DateTime, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from bot.db.base import Base, TimestampMixin
+from whisper.db.base import Base, TimestampMixin
 
 
 class User(Base, TimestampMixin):

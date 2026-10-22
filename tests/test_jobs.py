@@ -2,8 +2,8 @@ import asyncio
 
 from fakeredis import FakeAsyncRedis
 
-from bot.jobs import searching_task
-from bot.services import matchmaker
+from whisper.jobs import searching_task
+from whisper.services import matchmaker
 
 
 class FakeBot:

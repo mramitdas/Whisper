@@ -1,12 +1,12 @@
 from aiogram import Dispatcher
 
-from bot.handlers import register_all
+from whisper.handlers import register_all
 
 
 def test_main_module_imports():
-    import bot.main  # noqa: F401
+    import whisper.main  # noqa: F401
 
-    assert callable(bot.main.main)
+    assert callable(whisper.main.main)
 
 
 def test_build_dispatcher_registers_routers():
@@ -20,8 +20,8 @@ def test_middlewares_stack_order():
     from fakeredis import FakeAsyncRedis
     from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-    from bot.config import Settings
-    from bot.di import BanMiddleware, DbMiddleware, DiMiddleware
+    from whisper.config import Settings
+    from whisper.di import BanMiddleware, DbMiddleware, DiMiddleware
 
     settings = Settings(bot_token="1:t", owner_id=1)
     redis = FakeAsyncRedis(decode_responses=True)

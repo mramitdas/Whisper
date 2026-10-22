@@ -1,4 +1,4 @@
-from bot.db import repo
+from whisper.db import repo
 
 
 async def test_upsert_user_inserts_then_updates(db):

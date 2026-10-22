@@ -6,9 +6,9 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-import bot.db  # noqa: F401  (registers models on Base.metadata)
+import whisper.db  # noqa: F401  (registers models on Base.metadata)
 from alembic import context
-from bot.db.base import Base
+from whisper.db.base import Base
 
 config = context.config
 

@@ -48,7 +48,10 @@ Issues = "https://github.com/mramitdas/whisper/issues"
 Changelog = "https://github.com/mramitdas/whisper/blob/master/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
-packages = ["bot"]
+packages = ["whisper"]
+
+[project.scripts]
+whisper = "whisper.main:run"
 
 [tool.ruff]
 line-length = 100

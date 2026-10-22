@@ -4,10 +4,10 @@ from aiogram.types import Message
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot import texts
-from bot.config import Settings
-from bot.jobs import cancel_search_task
-from bot.services import matchmaker, reporting, sessions
+from whisper import texts
+from whisper.config import Settings
+from whisper.jobs import cancel_search_task
+from whisper.services import matchmaker, reporting, sessions
 
 router = Router(name="report")
 

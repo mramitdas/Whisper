@@ -3,9 +3,9 @@ from types import SimpleNamespace
 from fakeredis import FakeAsyncRedis
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from bot.config import Settings
-from bot.db.base import Base
-from bot.handlers import start as start_mod
+from whisper.config import Settings
+from whisper.db.base import Base
+from whisper.handlers import start as start_mod
 
 
 class FakeMessage:
@@ -39,7 +39,7 @@ async def test_start_welcomes_and_upserts():
         await db.commit()  # production DbMiddleware commits after each update
     assert any("Hey Amy" in t for t in msg.sent)
 
-    from bot.db import repo
+    from whisper.db import repo
 
     async with maker() as db:
         assert await repo.get_user(db, 1) is not None
@@ -50,7 +50,7 @@ async def test_start_blocked_for_banned_user():
     engine, maker = await make_env()
     settings = Settings(bot_token="1:t", owner_id=1)
     redis = FakeAsyncRedis(decode_responses=True)
-    from bot.services import bans
+    from whisper.services import bans
 
     async with maker() as db:
         await bans.add_ban(db, redis, 1, "x")

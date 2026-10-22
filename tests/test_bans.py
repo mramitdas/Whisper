@@ -1,8 +1,8 @@
 from fakeredis import FakeAsyncRedis
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from bot.db.base import Base
-from bot.services import bans
+from whisper.db.base import Base
+from whisper.services import bans
 
 
 async def make_env():
@@ -32,7 +32,7 @@ async def test_ban_set_roundtrip():
 async def test_load_bans_from_db():
     engine, maker = await make_env()
     r = FakeAsyncRedis(decode_responses=True)
-    from bot.db import repo
+    from whisper.db import repo
 
     async with maker() as db:
         await repo.add_ban(db, 5, "manual")

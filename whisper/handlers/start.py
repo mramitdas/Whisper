@@ -4,10 +4,10 @@ from aiogram.types import Message
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot import keyboards, texts
-from bot.config import Settings
-from bot.db import repo
-from bot.services import bans as ban_service
+from whisper import keyboards, texts
+from whisper.config import Settings
+from whisper.db import repo
+from whisper.services import bans as ban_service
 
 router = Router(name="start")
 

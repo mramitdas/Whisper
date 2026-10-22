@@ -5,14 +5,14 @@ from aiogram import Bot, Dispatcher
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-import bot.db  # noqa: F401  (registers models)
-from bot.config import Settings
-from bot.di import BanMiddleware, DbMiddleware, DiMiddleware
-from bot.errors import on_error
-from bot.handlers import register_all
-from bot.jobs import idle_sweeper
-from bot.redis_client import create_redis
-from bot.services import bans as ban_service
+import whisper.db  # noqa: F401  (registers models)
+from whisper.config import Settings
+from whisper.di import BanMiddleware, DbMiddleware, DiMiddleware
+from whisper.errors import on_error
+from whisper.handlers import register_all
+from whisper.jobs import idle_sweeper
+from whisper.redis_client import create_redis
+from whisper.services import bans as ban_service
 
 
 async def on_startup(bot: Bot, redis: Redis, sessionmaker: async_sessionmaker) -> None:
@@ -57,5 +57,10 @@ async def main() -> None:
         await redis.aclose()
 
 
-if __name__ == "__main__":
+def run() -> None:
+    """Console-script entry point (`whisper`)."""
     asyncio.run(main())
+
+
+if __name__ == "__main__":
+    run()

@@ -18,6 +18,6 @@ jobs:
       - name: Lint
         run: ruff check .
       - name: Type check
-        run: mypy bot
+        run: mypy whisper
       - name: Tests
         run: pytest -q

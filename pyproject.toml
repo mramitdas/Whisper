@@ -24,7 +24,9 @@ classifiers = [
 dependencies = [
   "aiogram>=3.13,<4",
   "redis>=5.2,<6",
-  "SQLAlchemy>=2.0.36,<2.1",
+  # the [asyncio] extra pulls in greenlet on every platform (SQLAlchemy only
+  # declares it for x86_64/win32, which breaks Apple Silicon installs)
+  "SQLAlchemy[asyncio]>=2.0.36,<2.1",
   "asyncpg>=0.30,<0.31",
   "alembic>=1.14,<1.15",
   "pydantic-settings>=2.7,<3",

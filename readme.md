@@ -1,82 +1,77 @@
-# TeleGram AnonymousChatBot
+# Telegram Anonymous Chat Bot
 
-Intro
---------
-This ChatBot is Telegram version of [omegle](http://www.omegle.com)
+Omegle-style anonymous 1:1 stranger chat inside Telegram. Two users get matched
+in seconds, messages and media are relayed without revealing identity, and
+either side can leave with one tap.
 
-Dependancies 
--------------
-In order to run this code you're supposed to have **python-telegram-bot**, **pymongo** and **pytz** libary installed
-on your machine, you can just use *pip* command to this.
+Built with **aiogram 3**, **Redis** (matchmaking + sessions) and **PostgreSQL**
+(users, reports, bans — metadata only).
+
+## Features
+
+- Instant random matching — FIFO queue, atomic match claim (no double-pairs)
+- Full media relay: text, photos, videos, voice, stickers, GIFs, documents
+- Live queue position + 60s no-partner timeout with one-tap retry
+- `/next`, `/stop`, `/report`, `/block` — clear exits and self-defense
+- Link / @username / forbidden-word filter (kills off-platform poaching)
+- Rate limiting, auto-ban after N unique reports, owner admin commands
+- Idle sweep: inactive chats expire and both sides are notified
+- **Zero message retention** — only metadata is stored
+
+## Quickstart
 
 ```bash
--> pip3 install -r requirements.txt
+cp .env.example .env        # set BOT_TOKEN and OWNER_ID
+docker compose up -d --build
+docker compose run --rm bot alembic upgrade head   # first deploy only
+docker compose logs -f bot
 ```
 
-Bot WorkFlow
------------
+## Commands
 
-```mermaid
-graph TD;
-    A((Start)):::entryPoint --> |Bot Welcome Text|B{Action}
+| Command | Description |
+|---|---|
+| `/start` | welcome + main menu |
+| `/search` | join the matchmaking queue |
+| `/next` | skip current partner, search again |
+| `/stop` | leave the queue or the current chat |
+| `/report [reason]` | report your (recent) partner |
+| `/block` | block partner — never matched again |
+| `/rules`, `/privacy`, `/help` | info |
+| `/admin_stats` | owner: users/matches/reports/queue/bans |
+| `/admin_ban <id>` / `/admin_unban <id>` | owner: manual bans |
 
-    B --> C1[Help]
-    B --> C2{Settings}
-    B --> C3{Find Partner}
-    B --> C4{Share Profile}
+## Development
 
-    C1 --> C1A{{List of commands with usage}}
-
-    C2 --> D[Set Gender]
-    D --> D1[Set Your Gender]
-    D --> D2[Set Partner's Gender]
-
-    D1 --> E1[Male]
-    D1 --> E2[Female]
-
-    D2 --> E1[Male]
-    D2 --> E2[Female]
-
-    C3 --> |If: Gender selection done| C3A{Condition}
-    C3A --> C3B1[NO]
-    C3A --> C3B2[YES]
-
-    C3B1 --> D
-    C3B2 --> |Random partner based on prefrence| C3B2A{Condition}
-    C3B2A --> |Not Available|C3B2A1[NO]
-    C3B2A --> |Available|C3B2A2[YES]
-
-    C3B2A1 --> C3B2A1A{{Temp Msg: Looking for partner's}}
-    C3B2A2 --> |Partner Choosen|C3B2A2A{{Conversation started}}
-
-    C3B2A2A --> C3B2A2A1((End)):::termination
-
-    C4 -->C4A{Condition}
-    C4A --> |Not Connected|C4B1[NO]
-    C4A --> |Connected|C4B2[YES]
-
-    C4B1 --> C4B1A{{Error: User not connected}}
-    C4B2 --> C4B1B{{Profile Shared}}
-
-
-    classDef entryPoint fill:#009c11, stroke:#42FF57, color:#ffffff
-    classDef termination fill:#bb0007, stroke:#E60109, color:#ffffff
+```bash
+pip install -r requirements-dev.txt
+pytest           # unit tests (fakeredis + sqlite, no services needed)
+ruff check .
+mypy bot
 ```
 
-## Project Structure
-```
-|-- app.py
-|-- info.py
-|-- database.py
-|-- readme.md
-|-- requirements.txt
-```
+## Config (`.env`)
 
-Give it a star 
---------------
-Did you find this information useful, then give it a star 
+| Var | Default | Purpose |
+|---|---|---|
+| `BOT_TOKEN` | — | Telegram bot token |
+| `OWNER_ID` | — | admin user id |
+| `REDIS_URL` | `redis://localhost:6379/0` | queue/sessions |
+| `DATABASE_URL` | `postgresql+asyncpg://bot:bot@localhost:5432/anonbot` | metadata |
+| `MATCH_TIMEOUT_SEC` | `60` | leave queue after N seconds |
+| `IDLE_TIMEOUT_SEC` | `1800` | inactive chat auto-close |
+| `MAX_REPORTS_BAN` | `5` | unique reports → auto-ban |
+| `MSG_RATE_MAX` / `MSG_RATE_WINDOW` | `5` / `2.0` | relay flood control |
+| `FORBIDDEN_WORDS` | `[]` | comma-separated filter list |
 
+## Notes
 
-Credits
------------
-All the credits to [mramitdas](https://github.com/mramitdas)
+- Long polling is used on purpose — no domain/TLS/webhook setup required.
+- Sessions live in Redis with TTL: a bot restart preserves active pairs;
+  a Redis flush fails safe (users return to idle with a notice).
+- The matchmaking Lua script assumes standalone Redis (compose default),
+  not Redis Cluster.
+
+## Credits
+
+Original concept by [mramitdas](https://github.com/mramitdas).

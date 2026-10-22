@@ -1,4 +1,8 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import json
+from typing import Annotated
+
+from pydantic import field_validator
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -22,4 +26,17 @@ class Settings(BaseSettings):
     search_rate_window: float = 3.0
 
     match_window: int = 50
-    forbidden_words: list[str] = []
+    forbidden_words: Annotated[list[str], NoDecode] = []
+
+    @field_validator("forbidden_words", mode="before")
+    @classmethod
+    def _parse_forbidden_words(cls, v):
+        """Accept comma-separated or JSON list spellings in .env."""
+        if v is None or v == "":
+            return []
+        if isinstance(v, str):
+            stripped = v.strip()
+            if stripped.startswith("["):
+                return json.loads(stripped)
+            return [w.strip() for w in stripped.split(",") if w.strip()]
+        return v

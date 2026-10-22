@@ -29,10 +29,17 @@ Initial public release. Complete rewrite of the original single-file bot as a pr
 - **Stack rewritten** from Python-telegram-bot v13 + gino + raw Redis commands to **aiogram 3 + SQLAlchemy 2 (async) + Redis-py** with atomic Lua matchmaking.
 - **Packaging** migrated to `pyproject.toml` (hatchling); `requirements.txt` / `requirements-dev.txt` removed in favor of `pip install .[dev]`.
 - **Package layout** renamed from `bot/` to `whisper/`.
+- **Deployments are self-migrating**: the container entrypoint runs `alembic upgrade head` before the bot starts, and the Compose project name is pinned to `whisper` so images are named consistently regardless of the checkout directory.
+
+### Fixed
+
+- `greenlet` is now installed on every platform via the `SQLAlchemy[asyncio]` extra — fresh installs on Apple Silicon previously failed at runtime.
+- The bot no longer crash-loops when the database schema is missing; it reports the missing migration instead.
+- The Telegram HTTP session is closed on startup failures, removing `Unclosed client session` noise.
 
 ### Removed
 
 - Legacy single-file bot (`app.py`, `database.py`, `info.py`) and the old synchronous stack.
 - Persistent message storage — replaced by pure relay with zero retention.
 
-[1.0.0]: https://github.com/mramitdas/whisper/releases/tag/v1.0.0
+[1.0.0]: https://github.com/mramitdas/Whisper/releases/tag/v1.0.0

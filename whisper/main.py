@@ -3,6 +3,7 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from redis.asyncio import Redis
+from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 import whisper.db  # noqa: F401  (registers models)
@@ -16,9 +17,14 @@ from whisper.services import bans as ban_service
 
 
 async def on_startup(bot: Bot, redis: Redis, sessionmaker: async_sessionmaker) -> None:
-    async with sessionmaker() as db:
-        await ban_service.load_bans(db, redis)
-        await db.commit()
+    try:
+        async with sessionmaker() as db:
+            await ban_service.load_bans(db, redis)
+            await db.commit()
+    except ProgrammingError as exc:
+        raise RuntimeError(
+            "database schema is missing or out of date — run `alembic upgrade head`"
+        ) from exc
     me = await bot.get_me()
     logging.info("Started as @%s", me.username)
 
@@ -47,14 +53,17 @@ async def main() -> None:
 
     dp.error.register(_error)
 
-    await on_startup(bot, redis, sessionmaker)
-    sweeper = asyncio.create_task(idle_sweeper(redis, bot))
+    sweeper: asyncio.Task[None] | None = None
     try:
+        await on_startup(bot, redis, sessionmaker)
+        sweeper = asyncio.create_task(idle_sweeper(redis, bot))
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
-        sweeper.cancel()
+        if sweeper is not None:
+            sweeper.cancel()
         await engine.dispose()
         await redis.aclose()
+        await bot.session.close()
 
 
 def run() -> None:

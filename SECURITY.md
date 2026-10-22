@@ -14,7 +14,7 @@ Only the latest code on the `master` branch receives security updates. There are
 
 Instead, report them privately via one of these channels:
 
-- **GitHub Security Advisories** (preferred): [Report a vulnerability](https://github.com/mramitdas/whisper/security/advisories/new)
+- **GitHub Security Advisories** (preferred): [Report a vulnerability](https://github.com/mramitdas/Whisper/security/advisories/new)
 - **Email**: [mramitdas99@gmail.com](mailto:mramitdas99@gmail.com)
 
 Include as much detail as you can:

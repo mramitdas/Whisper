@@ -2,7 +2,7 @@
 
 **Anonymous one-on-one stranger chat, inside Telegram.**
 
-[![CI](https://github.com/mramitdas/whisper/actions/workflows/ci.yml/badge.svg)](https://github.com/mramitdas/whisper/actions/workflows/ci.yml)
+[![CI](https://github.com/mramitdas/Whisper/actions/workflows/ci.yml/badge.svg)](https://github.com/mramitdas/Whisper/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776AB.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-compose-2496ED.svg)](docker-compose.yml)
@@ -121,17 +121,17 @@ not by policy.
 ### Docker Compose (recommended)
 
 ```bash
-git clone https://github.com/mramitdas/whisper.git
+git clone https://github.com/mramitdas/Whisper.git
 cd whisper
 cp .env.example .env          # set BOT_TOKEN and OWNER_ID
 docker compose up -d --build
-docker compose run --rm whisper alembic upgrade head   # first deploy only
 docker compose logs -f whisper
 ```
 
 Get a token from [@BotFather](https://t.me/BotFather); `OWNER_ID` is your
 numeric Telegram user ID. The stack brings up the bot, Redis and PostgreSQL with
-healthchecks — no other services required.
+healthchecks — no other services required. The container applies pending
+database migrations on start, so there is no separate migration step.
 
 ### Local development
 
@@ -266,8 +266,11 @@ Full E2E requires a real bot token and two Telegram accounts. Verify:
 
 ## Deployment & operations
 
-- **Migrations** are managed by Alembic. Run `alembic upgrade head` before
-  starting a new release; `alembic revision --autogenerate` creates a new one.
+- **Migrations** are managed by Alembic. The container entrypoint runs
+  `alembic upgrade head` before the bot starts, so deployments are always on the
+  current schema. For manual (non-Docker) deployments, run
+  `alembic upgrade head` yourself; `alembic revision --autogenerate` creates a
+  new migration.
 - **Healthchecks** are wired for Redis and PostgreSQL in `docker-compose.yml`;
   the bot waits for both to be healthy before starting.
 - **Scaling**: the bot is stateless, so you can run several replicas against

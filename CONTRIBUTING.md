@@ -5,7 +5,7 @@ Thanks for your interest in contributing! This document explains how to get set 
 ## Development setup
 
 ```bash
-git clone https://github.com/mramitdas/whisper.git
+git clone https://github.com/mramitdas/Whisper.git
 cd whisper
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
@@ -16,8 +16,10 @@ Or with Docker (no local Python needed):
 ```bash
 cp .env.example .env   # set BOT_TOKEN and OWNER_ID
 docker compose up -d --build
-docker compose run --rm whisper alembic upgrade head
 ```
+
+Migrations are applied automatically by the container entrypoint, so there is no
+separate migration step for the Docker workflow.
 
 ## Quality gates
 
@@ -49,7 +51,7 @@ CI runs the same gates on every push and pull request.
 
 ## Reporting bugs
 
-Use the [bug report template](https://github.com/mramitdas/whisper/issues/new?template=bug_report.yml). Include:
+Use the [bug report template](https://github.com/mramitdas/Whisper/issues/new?template=bug_report.yml). Include:
 
 - What you did, what you expected, what actually happened.
 - Your environment (Python version, Docker or bare metal, OS).
@@ -61,7 +63,7 @@ Use the [bug report template](https://github.com/mramitdas/whisper/issues/new?te
 
 ## Good first issues
 
-Look for issues labeled [`good first issue`](https://github.com/mramitdas/whisper/labels/good%20first%20issue) — these are scoped, well-described, and beginner-friendly.
+Look for issues labeled [`good first issue`](https://github.com/mramitdas/Whisper/labels/good%20first%20issue) — these are scoped, well-described, and beginner-friendly.
 
 ## License
 

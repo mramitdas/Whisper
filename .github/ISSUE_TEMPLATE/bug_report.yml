@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to report a bug!
-        **Security issues**: please report privately via [SECURITY.md](https://github.com/mramitdas/whisper/blob/master/SECURITY.md) instead.
+        **Security issues**: please report privately via [SECURITY.md](https://github.com/mramitdas/Whisper/blob/master/SECURITY.md) instead.
 
   - type: textarea
     id: what-happened

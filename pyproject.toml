@@ -44,10 +44,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mramitdas/whisper"
-Repository = "https://github.com/mramitdas/whisper"
-Issues = "https://github.com/mramitdas/whisper/issues"
-Changelog = "https://github.com/mramitdas/whisper/blob/master/CHANGELOG.md"
+Homepage = "https://github.com/mramitdas/Whisper"
+Repository = "https://github.com/mramitdas/Whisper"
+Issues = "https://github.com/mramitdas/Whisper/issues"
+Changelog = "https://github.com/mramitdas/Whisper/blob/master/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["whisper"]

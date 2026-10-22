@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+        **Security issues**: please report privately via [SECURITY.md](https://github.com/mramitdas/whisper/blob/master/SECURITY.md) instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+      placeholder: When I do /search with two accounts, ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: I expected both users to be matched.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps someone else can follow to hit the bug.
+      placeholder: |
+        1. Start the bot with docker compose
+        2. From account A send /search
+        3. From account B send /search
+        4. ...
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version, Docker or bare metal, OS.
+      placeholder: "Python 3.12, Docker Compose, macOS 15"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste output from `docker compose logs bot` or your terminal.
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues for duplicates
+          required: true
+        - label: This is not a security vulnerability (those go to SECURITY.md)
+          required: true

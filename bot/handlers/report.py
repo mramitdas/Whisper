@@ -17,7 +17,10 @@ router = Router(name="report")
 async def cmd_report(
     message: Message, db: AsyncSession, redis: Redis, settings: Settings, bot
 ) -> None:
-    uid = message.from_user.id
+    user = message.from_user
+    if user is None:
+        return
+    uid = user.id
     target = await sessions.get_report_target(redis, uid)
     if target is None:
         await message.answer(texts.REPORT_NO_TARGET)
@@ -35,7 +38,10 @@ async def cmd_report(
 
 @router.message(Command("block"))
 async def cmd_block(message: Message, redis: Redis, settings: Settings, bot) -> None:
-    uid = message.from_user.id
+    user = message.from_user
+    if user is None:
+        return
+    uid = user.id
     target = await sessions.get_partner(redis, uid)
     if target is None:
         await message.answer(texts.REPORT_NO_TARGET)

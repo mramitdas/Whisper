@@ -12,7 +12,10 @@ router = Router(name="chat")
 
 
 async def do_search(message: Message, redis: Redis, settings: Settings, bot) -> None:
-    uid = message.from_user.id
+    user = message.from_user
+    if user is None:
+        return
+    uid = user.id
     if await sessions.get_partner(redis, uid):
         await message.answer(texts.ALREADY_CHATTING)
         return
@@ -50,7 +53,10 @@ async def cmd_search(message: Message, redis: Redis, settings: Settings, bot) ->
 @router.message(Command("stop"))
 @router.message(F.text == "⛔ Stop")
 async def cmd_stop(message: Message, redis: Redis, settings: Settings, bot) -> None:
-    uid = message.from_user.id
+    user = message.from_user
+    if user is None:
+        return
+    uid = user.id
     if await matchmaker.queue_position(redis, uid) is not None:
         await matchmaker.dequeue(redis, uid)
         cancel_search_task(uid)
@@ -68,7 +74,10 @@ async def cmd_stop(message: Message, redis: Redis, settings: Settings, bot) -> N
 @router.message(Command("next"))
 @router.message(F.text == "🔍 Next")
 async def cmd_next(message: Message, redis: Redis, settings: Settings, bot) -> None:
-    uid = message.from_user.id
+    user = message.from_user
+    if user is None:
+        return
+    uid = user.id
     partner = await sessions.destroy_session(redis, uid, settings.lastpartner_ttl_sec)
     if partner is not None:
         await bot.send_message(partner, texts.STOPPED_PARTNER, reply_markup=keyboards.main_kb())
@@ -77,10 +86,13 @@ async def cmd_next(message: Message, redis: Redis, settings: Settings, bot) -> N
 
 @router.callback_query(F.data == "cancel_search")
 async def cb_cancel_search(query: CallbackQuery, redis: Redis, settings: Settings) -> None:
-    uid = query.from_user.id
-    await matchmaker.dequeue(redis, uid)
-    cancel_search_task(uid)
-    await query.message.edit_text(texts.CANCELLED)
+    msg = query.message
+    if not isinstance(msg, Message):
+        await query.answer()
+        return
+    await matchmaker.dequeue(redis, query.from_user.id)
+    cancel_search_task(query.from_user.id)
+    await msg.edit_text(texts.CANCELLED)
     await query.answer()
 
 
@@ -88,15 +100,17 @@ async def cb_cancel_search(query: CallbackQuery, redis: Redis, settings: Setting
 async def cb_search_again(
     query: CallbackQuery, redis: Redis, settings: Settings, bot
 ) -> None:
+    msg = query.message
+    if not isinstance(msg, Message):
+        await query.answer()
+        return
     await query.answer()
-    await query.message.edit_text(
-        texts.SEARCHING.format(pos=1), reply_markup=keyboards.cancel_kb()
-    )
+    await msg.edit_text(texts.SEARCHING.format(pos=1), reply_markup=keyboards.cancel_kb())
     start_search_task(
         bot,
         redis,
         query.from_user.id,
-        query.message.chat.id,
-        query.message.message_id,
+        msg.chat.id,
+        msg.message_id,
         settings.match_timeout_sec,
     )

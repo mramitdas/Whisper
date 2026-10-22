@@ -27,13 +27,13 @@ async def _deliver(bot, partner: int, message: Message) -> None:
         await bot.send_chat_action(partner, ChatAction.RECORD_VOICE)
         await bot.send_voice(partner, message.voice)
     elif message.audio:
-        await bot.send_chat_action(partner, ChatAction.UPLOAD_AUDIO)
+        await bot.send_chat_action(partner, ChatAction.UPLOAD_DOCUMENT)
         await bot.send_audio(partner, message.audio)
     elif message.document:
         await bot.send_chat_action(partner, ChatAction.UPLOAD_DOCUMENT)
         await bot.send_document(partner, message.document)
     elif message.animation:
-        await bot.send_chat_action(partner, ChatAction.UPLOAD_ANIMATION)
+        await bot.send_chat_action(partner, ChatAction.UPLOAD_DOCUMENT)
         await bot.send_animation(partner, message.animation)
     else:
         await bot.send_chat_action(partner, ChatAction.TYPING)
@@ -41,7 +41,10 @@ async def _deliver(bot, partner: int, message: Message) -> None:
 
 
 async def relay_message(message: Message, redis: Redis, settings: Settings, bot) -> None:
-    uid = message.from_user.id
+    user = message.from_user
+    if user is None:
+        return
+    uid = user.id
     partner = await sessions.get_partner(redis, uid)
     if partner is None:
         await message.answer(texts.RELAY_NO_PARTNER)

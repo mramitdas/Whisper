@@ -21,3 +21,9 @@ filterwarnings = [
 python_version = "3.12"
 ignore_missing_imports = true
 check_untyped_defs = true
+
+# redis-py's overloaded response types (decode_responses not a Literal) produce
+# spurious "Awaitable | T" await errors at every call site; skip its stubs.
+[[tool.mypy.overrides]]
+module = ["redis.*", "fakeredis.*"]
+follow_imports = "skip"

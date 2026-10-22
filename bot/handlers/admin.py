@@ -15,7 +15,8 @@ router = Router(name="admin")
 
 
 def _is_owner(message: Message, settings: Settings) -> bool:
-    return message.from_user.id == settings.owner_id
+    user = message.from_user
+    return user is not None and user.id == settings.owner_id
 
 
 @router.message(Command("admin_stats"))

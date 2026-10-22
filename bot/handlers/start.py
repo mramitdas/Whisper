@@ -16,12 +16,13 @@ router = Router(name="start")
 async def cmd_start(
     message: Message, db: AsyncSession, redis: Redis, settings: Settings
 ) -> None:
-    uid = message.from_user.id
-    if await ban_service.is_banned(redis, uid):
+    u = message.from_user
+    if u is None:
+        return
+    if await ban_service.is_banned(redis, u.id):
         await message.answer(texts.BANNED)
         return
-    u = message.from_user
-    await repo.upsert_user(db, uid, u.username, u.first_name, u.language_code)
+    await repo.upsert_user(db, u.id, u.username, u.first_name, u.language_code)
     await message.answer(
         texts.welcome(u.first_name or "there"), reply_markup=keyboards.main_kb()
     )

@@ -1,8 +1,6 @@
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-# legacy files removed in final task of the rewrite plan
-extend-exclude = ["app.py", "database.py", "info.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

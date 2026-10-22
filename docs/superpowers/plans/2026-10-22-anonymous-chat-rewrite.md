@@ -67,128 +67,128 @@ Legacy `app.py`, `database.py`, `info.py` are deleted in the final task.
 
 **Files:** `pyproject.toml`, `requirements.txt`, `requirements-dev.txt`, `.env.example`, `.gitignore` (modify), `bot/__init__.py`, `bot/config.py`, `bot/texts.py`, `bot/keyboards.py`, `tests/test_config.py`
 
-- [ ] Write failing `tests/test_config.py` (defaults + env override), run → FAIL
-- [ ] Create requirements, pyproject tool config, `Settings`, `texts.py` (all user-facing strings), `keyboards.py` (main/chat/cancel/search-again keyboards)
-- [ ] `pip install -r requirements-dev.txt && pytest tests/test_config.py -v` → PASS
-- [ ] `ruff check .` clean → commit `feat: scaffold config, texts, keyboards, tooling`
+- [x] Write failing `tests/test_config.py` (defaults + env override), run → FAIL
+- [x] Create requirements, pyproject tool config, `Settings`, `texts.py` (all user-facing strings), `keyboards.py` (main/chat/cancel/search-again keyboards)
+- [x] `pip install -r requirements-dev.txt && pytest tests/test_config.py -v` → PASS
+- [x] `ruff check .` clean → commit `feat: scaffold config, texts, keyboards, tooling`
 
 ### Task 2: Database layer
 
 **Files:** `bot/db/{__init__,base,models,repo}.py`, `alembic.ini`, `alembic/env.py`, `alembic/versions/0001_initial.py`, `tests/conftest.py`, `tests/test_repo.py`
 
-- [ ] Write failing tests (upsert, reports/unique_reporters, ban lifecycle, counters) → FAIL
-- [ ] Implement models User/Report/Ban/Stat + repo CRUD (flush-based, typed)
-- [ ] pytest → PASS; hand-write Alembic initial migration matching models
-- [ ] commit `feat: postgres models, repo, alembic migration`
+- [x] Write failing tests (upsert, reports/unique_reporters, ban lifecycle, counters) → FAIL
+- [x] Implement models User/Report/Ban/Stat + repo CRUD (flush-based, typed)
+- [x] pytest → PASS; hand-write Alembic initial migration matching models
+- [x] commit `feat: postgres models, repo, alembic migration`
 
 ### Task 3: Redis client + session service
 
 **Files:** `bot/redis_client.py`, `bot/services/__init__.py`, `bot/services/sessions.py`, `tests/test_sessions.py`
 
-- [ ] Failing tests: get_partner, destroy (sets lastpartner, clears act, idempotent), report target preference, touch_act → FAIL
-- [ ] Implement → PASS → commit `feat: redis session service`
+- [x] Failing tests: get_partner, destroy (sets lastpartner, clears act, idempotent), report target preference, touch_act → FAIL
+- [x] Implement → PASS → commit `feat: redis session service`
 
 ### Task 4: Matchmaking engine (Lua atomic claim)
 
 **Files:** `bot/services/matchmaker.py`, `tests/test_matchmaker.py`
 
-- [ ] Failing tests: FIFO match, unmatched stays queued, never self-match, blocklist skip, session TTL, dequeue/position → FAIL
-- [ ] Implement `enqueue_and_match` (ZADD self + scan window of oldest candidates + blocklist SISMEMBER both ways + ZREM pair + SET session keys with TTL, all atomic in one EVAL), `dequeue`, `queue_position`, `queue_size`
-- [ ] pytest → PASS → commit `feat: atomic lua matchmaking with blocklist + ttl sessions`
+- [x] Failing tests: FIFO match, unmatched stays queued, never self-match, blocklist skip, session TTL, dequeue/position → FAIL
+- [x] Implement `enqueue_and_match` (ZADD self + scan window of oldest candidates + blocklist SISMEMBER both ways + ZREM pair + SET session keys with TTL, all atomic in one EVAL), `dequeue`, `queue_position`, `queue_size`
+- [x] pytest → PASS → commit `feat: atomic lua matchmaking with blocklist + ttl sessions`
 
 ### Task 5: Rate limiters
 
 **Files:** `bot/services/ratelimit.py`, `tests/test_ratelimit.py`
 
-- [ ] Failing tests: sliding allows max then blocks (per-user/bucket isolation), fixed window resets → FAIL
-- [ ] Implement `allow_sliding` (ZSET timestamps + unique member) and `allow_fixed` (INCR+EXPIRE) → PASS → commit
+- [x] Failing tests: sliding allows max then blocks (per-user/bucket isolation), fixed window resets → FAIL
+- [x] Implement `allow_sliding` (ZSET timestamps + unique member) and `allow_fixed` (INCR+EXPIRE) → PASS → commit
 
 ### Task 6: Content moderation filter
 
 **Files:** `bot/services/moderation.py`, `tests/test_moderation.py`
 
-- [ ] Failing tests: @username (≥5 chars) blocked, short @ allowed, http/https/t.me/www blocked, emails/decimals allowed, forbidden words case-insensitive → FAIL
-- [ ] Implement `check_text(text, forbidden_words) -> "link"|"forbidden"|None` → PASS → commit
+- [x] Failing tests: @username (≥5 chars) blocked, short @ allowed, http/https/t.me/www blocked, emails/decimals allowed, forbidden words case-insensitive → FAIL
+- [x] Implement `check_text(text, forbidden_words) -> "link"|"forbidden"|None` → PASS → commit
 
 ### Task 7: Ban service + middlewares
 
 **Files:** `bot/services/bans.py`, `bot/di.py`, `tests/test_bans.py`
 
-- [ ] Failing tests: ban roundtrip via Redis set + DB, load_bans from DB → FAIL
-- [ ] Implement bans service (is_banned/add_ban/remove_ban/active_ban_count/load_bans)
-- [ ] Implement DiMiddleware (settings/redis/sessionmaker into handler data), DbMiddleware (session per update, commit after), BanMiddleware (skip handlers + reply for banned)
-- [ ] pytest → PASS → commit `feat: ban service and DI/DB/ban middlewares`
+- [x] Failing tests: ban roundtrip via Redis set + DB, load_bans from DB → FAIL
+- [x] Implement bans service (is_banned/add_ban/remove_ban/active_ban_count/load_bans)
+- [x] Implement DiMiddleware (settings/redis/sessionmaker into handler data), DbMiddleware (session per update, commit after), BanMiddleware (skip handlers + reply for banned)
+- [x] pytest → PASS → commit `feat: ban service and DI/DB/ban middlewares`
 
 ### Task 8: start/help/rules/privacy handlers
 
 **Files:** `bot/handlers/__init__.py`, `bot/handlers/start.py`, placeholder routers for admin/report/chat/relay, `tests/test_handlers.py`
 
-- [ ] Failing tests with duck-typed FakeMessage: start welcomes + upserts; banned user gets suspension notice → FAIL
-- [ ] Implement `cmd_start` (ban gate → upsert → welcome + main keyboard), `/help`, `/rules`, `/privacy` + Rules/Privacy buttons
-- [ ] `register_all(dp)` orders routers: start, admin, report, chat, relay (relay last) → PASS → commit
+- [x] Failing tests with duck-typed FakeMessage: start welcomes + upserts; banned user gets suspension notice → FAIL
+- [x] Implement `cmd_start` (ban gate → upsert → welcome + main keyboard), `/help`, `/rules`, `/privacy` + Rules/Privacy buttons
+- [x] `register_all(dp)` orders routers: start, admin, report, chat, relay (relay last) → PASS → commit
 
 ### Task 9: Search flow — queue, position job, cancel, timeout
 
 **Files:** `bot/jobs.py`, `bot/handlers/chat.py`, `tests/test_jobs.py`
 
-- [ ] Failing tests: searching_task exits when matched; times out at 0s → dequeued + "No one's free" edit → FAIL
-- [ ] Implement jobs (search_tasks dict, start/cancel, searching_task loop: 1s tick, ZRANK check, timeout dequeue, edit position)
-- [ ] Implement chat.py: do_search (already-chatting gate, fixed-window throttle, enqueue_and_match, notify both + chat keyboard, else start job), `/search` + Find partner button, `/stop` + Stop (leave queue or destroy session), `/next` (destroy + re-search), cancel_search / search_again callbacks
-- [ ] pytest → PASS → commit `feat: search/next/stop flow with live queue position and timeout`
+- [x] Failing tests: searching_task exits when matched; times out at 0s → dequeued + "No one's free" edit → FAIL
+- [x] Implement jobs (search_tasks dict, start/cancel, searching_task loop: 1s tick, ZRANK check, timeout dequeue, edit position)
+- [x] Implement chat.py: do_search (already-chatting gate, fixed-window throttle, enqueue_and_match, notify both + chat keyboard, else start job), `/search` + Find partner button, `/stop` + Stop (leave queue or destroy session), `/next` (destroy + re-search), cancel_search / search_again callbacks
+- [x] pytest → PASS → commit `feat: search/next/stop flow with live queue position and timeout`
 
 ### Task 10: Message + media relay
 
 **Files:** `bot/handlers/relay.py`, `tests/test_relay.py`
 
-- [ ] Failing tests: text relayed to partner; no-session notice; link blocked (nothing delivered to partner); flood dropped (≤ max delivered); photo caption filtered → FAIL
-- [ ] Implement relay_message: partner lookup → sliding-window rate limit → content filter (text or caption) → touch_act → typed _deliver for each media type
-- [ ] Routers: `F.text` and media filter handlers → PASS → commit
+- [x] Failing tests: text relayed to partner; no-session notice; link blocked (nothing delivered to partner); flood dropped (≤ max delivered); photo caption filtered → FAIL
+- [x] Implement relay_message: partner lookup → sliding-window rate limit → content filter (text or caption) → touch_act → typed _deliver for each media type
+- [x] Routers: `F.text` and media filter handlers → PASS → commit
 
 ### Task 11: Report + block (auto-ban)
 
 **Files:** `bot/services/reporting.py`, `bot/handlers/report.py`, `tests/test_reporting.py`
 
-- [ ] Failing tests: auto-ban at threshold of unique reporters; same reporter counts once; block prevents rematch → FAIL
-- [ ] Implement submit_report (store + unique count ≥ threshold → add_ban) and add_block
-- [ ] Implement /report (target = live session else lastpartner; reason from text; on auto-ban disconnect target) and /block → PASS → commit
+- [x] Failing tests: auto-ban at threshold of unique reporters; same reporter counts once; block prevents rematch → FAIL
+- [x] Implement submit_report (store + unique count ≥ threshold → add_ban) and add_block
+- [x] Implement /report (target = live session else lastpartner; reason from text; on auto-ban disconnect target) and /block → PASS → commit
 
 ### Task 12: Admin commands
 
 **Files:** `bot/handlers/admin.py`, `tests/test_admin.py`
 
-- [ ] Failing tests: stats denied for non-owner, shown for owner; admin_ban/admin_unban roundtrip → FAIL
-- [ ] Implement owner-gated `/admin_stats`, `/admin_ban <id>`, `/admin_unban <id>` → PASS → commit
+- [x] Failing tests: stats denied for non-owner, shown for owner; admin_ban/admin_unban roundtrip → FAIL
+- [x] Implement owner-gated `/admin_stats`, `/admin_ban <id>`, `/admin_unban <id>` → PASS → commit
 
 ### Task 13: Error handler + idle sweeper
 
 **Files:** `bot/errors.py`, append to `bot/jobs.py`, `tests/test_errors.py`
 
-- [ ] Failing test: idle_sweeper_once drops inactive pair and notifies both → FAIL
-- [ ] Implement sweeper (SCAN session:* without act → destroy + notify) and periodic loop
-- [ ] Implement on_error: RetryAfter → sleep; ForbiddenError → destroy session + notify partner; else log + friendly message → PASS → commit
+- [x] Failing test: idle_sweeper_once drops inactive pair and notifies both → FAIL
+- [x] Implement sweeper (SCAN session:* without act → destroy + notify) and periodic loop
+- [x] Implement on_error: RetryAfter → sleep; ForbiddenError → destroy session + notify partner; else log + friendly message → PASS → commit
 
 ### Task 14: Entrypoint wiring
 
 **Files:** `bot/main.py`, `tests/test_main_wiring.py`
 
-- [ ] Failing test: register_all order == [start, admin, report, chat, relay] → FAIL
-- [ ] Implement main(): Settings, redis, engine/sessionmaker, Bot, Dispatcher, three outer middlewares, register_all, error handler (async wrapper), load_bans on startup, idle sweeper task, start_polling, cleanup in finally → PASS → commit
+- [x] Failing test: register_all order == [start, admin, report, chat, relay] → FAIL
+- [x] Implement main(): Settings, redis, engine/sessionmaker, Bot, Dispatcher, three outer middlewares, register_all, error handler (async wrapper), load_bans on startup, idle sweeper task, start_polling, cleanup in finally → PASS → commit
 
 ### Task 15: Docker, compose, README
 
 **Files:** `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `readme.md` (rewrite)
 
-- [ ] Dockerfile python:3.12-slim; compose: bot + redis:7-alpine + postgres:16-alpine with healthchecks, pgdata volume, env_file
-- [ ] README: quickstart, alembic first-deploy step, commands table, privacy stance, dev commands
-- [ ] `docker compose config` valid; `docker compose build` succeeds → commit
+- [x] Dockerfile python:3.12-slim; compose: bot + redis:7-alpine + postgres:16-alpine with healthchecks, pgdata volume, env_file
+- [x] README: quickstart, alembic first-deploy step, commands table, privacy stance, dev commands
+- [x] `docker compose config` valid; `docker compose build` succeeds → commit
 
 ### Task 16: CI + remove legacy files + full verify
 
 **Files:** `.github/workflows/ci.yml`; delete `app.py`, `database.py`, `info.py`
 
-- [ ] CI: ruff check, mypy, pytest on push/PR (no services needed — fakeredis + aiosqlite)
-- [ ] Delete legacy files; grep for stale imports
-- [ ] Full verify: `pytest -v && ruff check . && mypy bot` all clean → commit
+- [x] CI: ruff check, mypy, pytest on push/PR (no services needed — fakeredis + aiosqlite)
+- [x] Delete legacy files; grep for stale imports
+- [x] Full verify: `pytest -v && ruff check . && mypy bot` all clean → commit
 
 ---
 

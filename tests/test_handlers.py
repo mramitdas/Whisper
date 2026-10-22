@@ -36,6 +36,7 @@ async def test_start_welcomes_and_upserts():
     msg = FakeMessage()
     async with maker() as db:
         await start_mod.cmd_start(message=msg, db=db, redis=redis, settings=settings)
+        await db.commit()  # production DbMiddleware commits after each update
     assert any("Hey Amy" in t for t in msg.sent)
 
     from bot.db import repo

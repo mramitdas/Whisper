@@ -10,6 +10,12 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:.*slated for removal in Python 3.16:DeprecationWarning",
+    "ignore:_restore_event_loop_policy:DeprecationWarning",
+    "ignore:_save:DeprecationWarning",
+    "ignore:There is no current event loop:DeprecationWarning",
+]
 
 [tool.mypy]
 python_version = "3.12"

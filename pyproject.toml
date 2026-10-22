@@ -1,3 +1,55 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "whisper-telegram"
+version = "1.0.0"
+description = "Omegle-style anonymous 1:1 stranger chat inside Telegram — aiogram 3, Redis, PostgreSQL, zero message retention."
+readme = "readme.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Amit Das", email = "mramitdas99@gmail.com" }]
+requires-python = ">=3.12"
+keywords = ["telegram", "bot", "anonymous", "chat", "stranger", "aiogram", "redis"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Framework :: AsyncIO",
+  "Intended Audience :: End Users/Desktop",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Communications :: Chat",
+  "Typing :: Typed",
+]
+dependencies = [
+  "aiogram>=3.13,<4",
+  "redis>=5.2,<6",
+  "SQLAlchemy>=2.0.36,<2.1",
+  "asyncpg>=0.30,<0.31",
+  "alembic>=1.14,<1.15",
+  "pydantic-settings>=2.7,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+  "pytest-asyncio>=0.25,<0.26",
+  "fakeredis>=2.26,<3",
+  "aiosqlite>=0.20,<0.21",
+  "ruff>=0.9,<0.10",
+  "mypy>=1.14,<1.16",
+  "lupa>=2.0,<3",
+]
+
+[project.urls]
+Homepage = "https://github.com/mramitdas/whisper"
+Repository = "https://github.com/mramitdas/whisper"
+Issues = "https://github.com/mramitdas/whisper/issues"
+Changelog = "https://github.com/mramitdas/whisper/blob/master/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["bot"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"

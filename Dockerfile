@@ -5,10 +5,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+COPY pyproject.toml readme.md LICENSE ./
 COPY bot/ bot/
+RUN pip install --no-cache-dir .
+
 COPY alembic/ alembic/
 COPY alembic.ini .
 

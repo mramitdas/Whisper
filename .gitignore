@@ -1,4 +1,4 @@
 .DS_Store
 .idea/
 __pycache__/
-temp.py
+temp.py.env
